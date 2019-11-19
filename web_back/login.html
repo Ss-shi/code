@@ -51,6 +51,38 @@
     
     <script src="./js/jquery-1.12.4.min.js"></script>
     <script src="./js/bootstrap/js/bootstrap.min.js"></script>
+
+    <script>
+        // 用户模块
+        // 把所有的与用户相关的操作全放在这个对象中
+        var user = {
+            login:function(userName,userPassword){
+                // 发 ajax请求去检查正确与否
+                console.log( '发ajax请求去检查正确与否',userName,userPassword)
+                $.post('http://localhost:8000/admin/login', 
+                    {
+                        user_name: userName,
+                        password: userPassword
+                    },
+                    function(res){
+                        console.log(res);
+                        if(res.code === 200){
+                            // alert( '登陆成功' );
+                            location.href = "./index.html"
+                            // location.assign('./index.html')
+                        } else {
+                            // 登陆失败
+                            $('#msgInfo').text( res.msg )
+                            $('#myModal').modal('show')
+                            // alert( res.msg );
+                        }   
+                    }
+                )
+
+            }
+        }
+
+    </script>
     <script>
          // 实现管理员登陆功能
         $('#btnLogin').click(function(){
@@ -69,27 +101,8 @@
             }
             
             // 3. 发请求，根据返回给出提示
-            // $.ajax()
-            $.post('http://localhost:8000/admin/login', 
-                {
-                    user_name: myName,
-                    password: myPassoword
-                },
-                function(res){
-                    console.log(res);
-                    if(res.code === 200){
-                        // alert( '登陆成功' );
-                        location.href = "./index.html"
-                        // location.assign('./index.html')
-                    } else {
-                        // 登陆失败
-                        $('#msgInfo').text( res.msg )
-                        $('#myModal').modal('show')
-                        // alert( res.msg );
-                    }
-                    
-                })
-
+            user.login(myName,myPassoword)
+            // $.ajax() 
         })
 
     </script> 
