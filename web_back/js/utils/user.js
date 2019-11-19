@@ -13,12 +13,11 @@ var user = {
                 user_name: userName,
                 password: userPassword
             },
+            // callback(res)
             function(res){
-                 // 去调用 callback,并传入响应体
                 callback(res)
             }
         )
-
     },
     // 参数：当请求成功之后要调用的函数
     logout: function ( callback ){
@@ -27,8 +26,11 @@ var user = {
             callback(res)   
         })
     },
-    getInfo:function(){
-
+     
+    getInfo:function( callback ){
+        $.get(baseUrl+'admin/getuser',function(res){
+            callback(res)
+        })
     }
 }
 

@@ -17,8 +17,8 @@
     <div class="sider">
         <a href="#" class="logo"><img src="images/logo02.png" alt="logo"></a>
         <div class="user_info">
-            <img src="images/2.jpg" alt="person">
-            <span>欢迎&nbsp;&nbsp;李思思1111</span>
+            <img class="userImg" src="images/2.jpg" alt="person">
+            <span>欢迎&nbsp;&nbsp;<i id="userName" style="font-style: normal;">李思思1111</i></span>
             <b>管理员</b>
         </div>
         <div class="menu">
@@ -43,7 +43,7 @@
         </form>
         <div class="user_center_link">
             <a href="user.html" onclick="setMenu(3,0)" target="main_frame">个人中心</a>
-            <img src="images/2.jpg" alt="person">
+            <img class="userImg" src="images/2.jpg" alt="person">
             <a href="javascript:;" id="btnLogout"><i class="iconfont icon-tuichu"></i> 退出</a>
         </div>
     </div>
@@ -105,6 +105,17 @@
     <script src="./js/utils/user.js"></script>
 
     <script>
+        // 获取用户信息
+        user.getInfo( function(res){
+                console.log(res)
+                if(res.code === 200){
+                    $('#userName').text(res.data.nickname )
+                    $('.userImg').prop('src',res.data.user_pic )
+                }
+            }
+        )
+
+        // 用户退出
         $('#btnLogout').click(function(){
             // 1. 在退出之前，要确认
             if(window.confirm('你是要退出吗？') === false){
