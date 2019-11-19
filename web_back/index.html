@@ -102,20 +102,7 @@
 
     </script>
 
-    <script>
-        var user = {
-            logout: function (  ){
-                // 2. 调用接口
-                $.post('http://localhost:8000/admin/logout',function(res){
-                    console.log(res);
-                    if(res.code === 200){
-                        // 回去登陆页
-                        location.href = "./login.html"
-                    }      
-                })
-            }
-        }
-    </script>
+    <script src="./js/utils/user.js"></script>
 
     <script>
         $('#btnLogout').click(function(){
@@ -124,7 +111,13 @@
                 return;
             }
 
-            user.logout();
+            user.logout(function(res){
+                console.log(res);
+                if(res.code === 200){
+                    // 回去登陆页
+                    location.href = "./login.html"
+                }   
+            });
         })
     </script>
 
