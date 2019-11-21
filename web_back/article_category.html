@@ -166,7 +166,10 @@
 
         // 实现删除
         $('#categoryContainer').on('click','.del',function(){
-            console.log(this)
+            // console.log(this)
+            if(confirm('是否要删除？') === false ){
+                return;
+            }
             // 获取自定义属性的值
             var id = $(this).attr('data-id')
             console.log(id);
@@ -175,10 +178,8 @@
                 if(res.code === 200){
                     // 重新加载数据
                     getAndShow()
-                }
-                
-            })
-            
+                } 
+            }) 
         })
         
         // 页面加载去调用
