@@ -39,12 +39,8 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
                     <div class="col-sm-4">
-                        <select class="form-control">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                        <select class="form-control" id="cate_container">
+                           
                         </select>
                     </div>
                 </div>
@@ -79,6 +75,29 @@
             </form>
         </div>
     </div>
+
+    <script src="./js/utils/config.js"></script>
+    <script src="./js/utils/category.js"></script>
+    <script src="./js/template-web.js"></script>
+    <!-- {{each 数组 当前元素 当前下标}} -->
+    <script id="temp_cate" type="text/html">
+        {{each data item}}
+            <option>{{item.name}}</option>
+        {{/each}}
+    </script>
+
+    <script>
+        // 先查询出所有的文章类型信息并显示
+        category.show(function(res){
+            // 用模板引擎技术去显示数据
+            if(res.code === 200){
+               // var htmlStr = template(id,数据)
+                var htmlStr = template('temp_cate',res)
+                console.log(htmlStr);
+                $('#cate_container').html( htmlStr )  
+            }
+        })
+    </script>
 
 </body>
 
