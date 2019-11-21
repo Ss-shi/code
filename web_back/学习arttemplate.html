@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script src="./js/template-web.js"></script>
+
+    <script id="temp" type="text/html">
+        <h1>我的名字是：{{name}}</h1>
+        <p>在arttemplate这个模板工具中，它有自己的一套格式。 </p>
+        <p>如果你要显示 数据中的某个值，则直接使用{{属性名}} </p>
+        <div>{{name}}-{{name}}-{{name}}-{{name}}</div>
+        <!-- <ul>
+            <li>唱</li>
+            <li>跳</li>
+            <li>rap</li>
+        </ul> 
+    each的格式：
+      each 要循环的数组 当前元素 当前下标
+         -->
+        <ul>
+            {{each hobby item idx}}
+            <li>爱好{{idx+1}}:{{item}}</li>
+            {{/each}}
+        </ul>
+    </script>
+
+    <script>
+// 1. 引入template-web.js文件
+// 2. 定义模板。注意指定script的id和type属性
+//    在脚本中写html
+// 3. 准备数据对象。(变量，数组等)
+      var obj = {name:'abc',hobby:['唱','跳','rap','篮球']}
+// 4. 调用template函数，为模板分配数据，获得渲染结果，template的格式如下：
+    // var htmlStr  = template('模板id'，数据)
+
+    // 引入了template-web.js，所以它提供一个template函数。
+    
+    var htmlStr  = template('temp',obj)
+    // 在模板中的： {{属性名}}   ========》 console.log(obj.属性名)
+    // 在模板中的： {{hobby}}   ========》 console.log(obj.hobby)
+    console.log(htmlStr)
+    </script>
+</body>
+</html>
