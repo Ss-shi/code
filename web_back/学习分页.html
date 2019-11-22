@@ -13,20 +13,20 @@
 
     <script src="./js/jquery-1.12.4.min.js"></script>
     <script src="./js/jquery.twbsPagination.js"></script>
-<script>
-    $('#pagination-demo').twbsPagination({
-        totalPages: 46, // 总页数
-        visiblePages: 6, // 可见页数
-        first:'首页',
-        prev:'上一页',
-        next:'下一页',
-        last:'尾页',
+    <script>
+        $('#pagination-demo').twbsPagination({
+            totalPages: 46, // 总页数
+            visiblePages: 6, // 可见页数
+            first:'首页',
+            prev:'上一页',
+            next:'下一页',
+            last:'尾页',
 
-        onPageClick: function (event, page) {
-            $('#page-content').text('Page ' + page);
-        }
-    });
-</script>
+            onPageClick: function (event, page) {
+                $('#page-content').text('Page ' + page);
+            }
+        });
+    </script>
 
 </body>
 </html>

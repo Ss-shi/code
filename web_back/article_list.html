@@ -65,26 +65,14 @@
             </table>
 
             <div class="row text-center">
-            <ul class="pagination pagination-sm">
-                <li class="page-item first disabled"><a href="#" class="page-link">首页</a></li>
-                <li class="page-item prev disabled"><a href="#" class="page-link">上一页</a></li>
-                <li class="page-item active"><a href="#" class="page-link">1</a></li>
-                <li class="page-item"><a href="#" class="page-link">2</a></li>
-                <li class="page-item"><a href="#" class="page-link">3</a></li>
-                <li class="page-item"><a href="#" class="page-link">4</a></li>
-                <li class="page-item"><a href="#" class="page-link">5</a></li>
-                <li class="page-item"><a href="#" class="page-link">6</a></li>
-                <li class="page-item"><a href="#" class="page-link">7</a></li>
-                <li class="page-item next"><a href="#" class="page-link">下一页</a></li>
-                <li class="page-item last"><a href="#" class="page-link">尾页</a></li>
-            </ul>
-            
-        </div>
-
+                <ul id="pagination" class="pagination pagination-sm">
+                </ul>
+            </div>
         </div>
     </div>
     <script src="js/jquery-1.12.4.min.js"></script>
-
+    <!-- // 分页插件 -->
+    <script src="./js/jquery.twbsPagination.js"></script>
     
     <script src="js/utils/config.js"></script>
     <script src="js/utils/category.js"></script>
@@ -120,23 +108,54 @@
             window.parent.setMenu(1,1);
         })
 
+        var curPage = 1; // 用来保存当前要查询的页数
+        getAndShow();
+
         // 查询所有文章类别信息，并显示
         category.show(function(res){
             // 使用模板引擎技术来渲染数据
             // var htmlStr = template(id,数据)
             var htmlStr = template("cate_temp", res)
-            console.log(htmlStr);
+            // console.log(htmlStr);
             $('#selCategory').html(htmlStr) 
         })
 
+        // 获取数据并显示， 初始化分页插件
+        function getAndShow() {
+            // 要传递给后面的参数，由于个数会比较多，所以打包
+            // 通过一个对象来传递
+            // curPage 是一个全局变量
+            article.show({'page': curPage},function(res){
+                // 模板引擎 渲染页面
+                // res = {
+                //     code:
+                //     data:[],
+                //     msg:,
+                //     totalPage
+                // }
+                var htmlStr = template("table_temp", res)
+                // console.log(htmlStr);
+                // 显示数据
+                $('#tableContainer').html(htmlStr)  
 
-        article.show(function(res){
-            // 模板引擎 渲染页面
-            var htmlStr = template("table_temp", res)
-            console.log(htmlStr);
-            $('#tableContainer').html(htmlStr)  
-        })
-        
+                // 显示分页效果
+                $('#pagination').twbsPagination({
+                    totalPages: res.totalPage, // 总页数
+                    visiblePages: 7, // 可见页数
+                    initiateStartPageClick: false, // 不要一打开就去触发点击事件
+                    first:'首页',
+                    prev:'上一页',
+                    next:'下一页',
+                    last:'尾页',
+                    onPageClick: function (event, page) {
+                        // 更新全局变量curPage, 重新发请求
+                        curPage = page
+                        // alert(page);
+                        getAndShow()
+                    }
+                });
+            })
+        }
     </script>
 </body>
 
