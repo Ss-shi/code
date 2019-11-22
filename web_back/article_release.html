@@ -23,23 +23,23 @@
             写文章
         </div>
         <div class="container-fluid common_con">
-            <form class="form-horizontal article_form">
+            <form id="myform" class="form-horizontal article_form">
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章标题：</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" id="inputEmail3" placeholder="文章标题">
+                        <input type="text" name="title" class="form-control" id="inputEmail3" placeholder="文章标题">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">文章封面：</label>
                     <div class="col-sm-10">
-                        <input type="file" id="exampleInputFile">
+                        <input type="file" name="cover" id="exampleInputFile">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
                     <div class="col-sm-4">
-                        <select class="form-control" id="cate_container">
+                        <select class="form-control" id="cate_container" name="type">
                            
                         </select>
                     </div>
@@ -49,7 +49,7 @@
                     <div class="col-sm-4">
 
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="YYYY-MM-DD" id="dateinput">
+                            <input type="text" class="form-control" placeholder="YYYY-MM-DD" name="date" id="dateinput">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button"
                                     onclick="jeDate('#dateinput',{trigger:false,format: 'YYYY-MM-DD'})"><i
@@ -64,12 +64,13 @@
                         <textarea class="form-control" id="rich_content" name="content" placeholder="文章内容">
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda fugiat illo nihil molestias ab. Laborum eius non atque, totam sapiente quae obcaecati assumenda ratione inventore pariatur maiores, qui libero delectus.
                             </textarea>
+                            <!-- <textarea name="" id="" cols="30" rows="10"></textarea> -->
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-success">发布</button>
-                        <button type="submit" class="btn btn-default">存为草稿</button>
+                        <button type="button" class="btn btn-success" id="btnAdd">发布</button>
+                        <button type="button" class="btn btn-default">存为草稿</button>
                     </div>
                 </div>
             </form>
@@ -82,7 +83,7 @@
     <!-- {{each 数组 当前元素 当前下标}} -->
     <script id="temp_cate" type="text/html">
         {{each data item}}
-            <option>{{item.name}}</option>
+            <option value="{{item.id}}">{{item.name}}</option>
         {{/each}}
     </script>
 
@@ -96,6 +97,36 @@
                 console.log(htmlStr);
                 $('#cate_container').html( htmlStr )  
             }
+        })
+        
+        // 实现添加功能
+        $('#btnAdd').click(function(){
+            // 对接口文档的分析可知，这里要通过FormData来收集信息
+            // 1. 收集信息；
+            // var fd = new FormData(dom节点)
+            var fd = new FormData(document.getElementById('myform'))
+            fd.append('state','已发布')
+            // set 就是更新 键值对
+            fd.set('content', tinyMCE.activeEditor.getContent())
+            // 2. 对信息进行简单判断
+            // 3. 发请求；
+            // 作业： 把这个代码，拆开到config.js, article.js
+            $.ajax({
+                url: 'http://localhost:8000/admin/article_publish',
+                data:fd,
+                processData:false, // 不要让jquery去处理formData数据
+                contentType:false, // 不设置默认的请求头
+                type:'post',
+                success:function(res){
+                    console.log(res);
+                    if(res.code === 201){
+                        alert("添加成功！")
+                    } else {
+                        alert(res.msg)
+                    } 
+                }
+            })
+
         })
     </script>
 
