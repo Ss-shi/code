@@ -90,7 +90,7 @@
             <td class="text-center">{{item.state}}</td>
             <td class="text-center">
                 <a href="article_edit.html" class="btn btn-default btn-xs">编辑</a>
-                <a href="javascript:deleteTr( 1005 );" class="btn btn-danger btn-xs">删除</a>
+                <a href="javascript:;" data-id="{{item.id}}" class="btn btn-danger btn-xs del">删除</a>
             </td>
         </tr>
         {{/each}}
@@ -113,6 +113,7 @@
         var curPage = 1; // 用来保存当前要查询的页数
         var type = '';   // 当前要搜索的文章类型.要保存是文章类型的编号，而不是文本
         var status = ''; // 当前要搜索的文章状态
+        var curTotalPage = ''; // 当前查询的总页数
         getAndShow();
 
         // 查询所有文章类别信息，并显示
@@ -124,6 +125,27 @@
             $('#selCategory').html(htmlStr) 
         })
 
+        // 实现删除 
+        // $(容器).on(事件名，委托人，回调)
+        $('#tableContainer').on('click','.del',function(){
+            if( window.confirm('确认要删除吗？') === false) {
+                return;
+            }
+            
+            // 从自定义属性中获取出id      
+            var id = $(this).attr('data-id')
+            // 调用接口，发请求
+            article.del(id,function(res){
+                if(res.code === 200){
+                    // 删除成功
+                    // 重新请求
+                    getAndShow()
+
+                }
+            })
+
+        })
+
         // 筛选
         $('#btnSearch').click(function(){
             // 筛选功能
@@ -131,6 +153,9 @@
             // 更新全局变量
             type = $('#selCategory').val()
             status = $('#selStatus').val()
+
+            // 说明你已经改了查询的条件了，重置为搜索第一页的数据
+            curPage = 1
             // 2. 再去发请求显示
             getAndShow()
 
@@ -154,6 +179,18 @@
                 // 显示数据
                 $('#tableContainer').html(htmlStr)  
 
+                // twbsPagination 插件有一个bug：
+                // 它不能及时根据总页数不同来更新整个页码插件
+                
+                // 如果当前查询的结果得到的总页数与上一次查询得到的总页数不相同，则
+                // 需要销毁分页插件，以再次更新
+                if(res.totalPage != curTotalPage){
+                    console.log('总页数变化了',res.totalPage, )
+                    console.log('本次查询的总页数',res.totalPage)
+                    console.log('上一次查询的总页数',curTotalPage)
+                    $('#pagination').twbsPagination('destroy');
+                }
+                curTotalPage = res.totalPage
                 // 显示分页效果
                 $('#pagination').twbsPagination({
                     totalPages: res.totalPage, // 总页数

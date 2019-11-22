@@ -13,5 +13,11 @@ var article = {
                 callback(res)
             }
         )
+    },
+    // id: 要删除的文章编号
+    del: function(id, callback){
+        $.get(APIURLS.article_del,{'id': id},function(res){
+            callback(res)
+        })
     }
 }
