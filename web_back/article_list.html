@@ -26,9 +26,10 @@
                            
                         </select>
                         <select id="selStatus" name="" class="form-control input-sm">
-                            <option>所有状态</option>
-                            <option value="drafted">草稿</option>
-                            <option value="published">已发布</option>
+                            <!-- option 中如果没有设置value，则通过$().val()拿到就是文字 -->
+                            <option value="">所有状态</option>
+                            <option value="草稿">草稿</option>
+                            <option value="已发布">已发布</option>
                         </select>
                         <button id="btnSearch" class="btn btn-default btn-sm">筛选</button>
                     </form>
@@ -95,9 +96,9 @@
         {{/each}}
     </script>
     <script id="cate_temp" type="text/html">
-        <option>所有分类</option>
+        <option value=''>所有分类</option>
         {{each data item}}
-        <option>{{item.name}}</option>
+        <option value={{item.id}}>{{item.name}}</option>
         {{/each}}
     </script>
     
@@ -107,8 +108,11 @@
         $('#release_btn').click(function(){
             window.parent.setMenu(1,1);
         })
+        //--------------------------------------------------
 
         var curPage = 1; // 用来保存当前要查询的页数
+        var type = '';   // 当前要搜索的文章类型.要保存是文章类型的编号，而不是文本
+        var status = ''; // 当前要搜索的文章状态
         getAndShow();
 
         // 查询所有文章类别信息，并显示
@@ -120,12 +124,24 @@
             $('#selCategory').html(htmlStr) 
         })
 
+        // 筛选
+        $('#btnSearch').click(function(){
+            // 筛选功能
+            // 1. 获取参数：类别，状态。
+            // 更新全局变量
+            type = $('#selCategory').val()
+            status = $('#selStatus').val()
+            // 2. 再去发请求显示
+            getAndShow()
+
+        })
+
         // 获取数据并显示， 初始化分页插件
         function getAndShow() {
             // 要传递给后面的参数，由于个数会比较多，所以打包
             // 通过一个对象来传递
             // curPage 是一个全局变量
-            article.show({'page': curPage},function(res){
+            article.show({'page': curPage, 'type': type, 'status': status},function(res){
                 // 模板引擎 渲染页面
                 // res = {
                 //     code:
