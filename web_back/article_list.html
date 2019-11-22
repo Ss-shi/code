@@ -88,6 +88,7 @@
     
     <script src="js/utils/config.js"></script>
     <script src="js/utils/category.js"></script>
+    <script src="js/utils/article.js"></script>
 
     <script src="./js/template-web.js"></script>
     <script id="table_temp" type="text/html">
@@ -114,6 +115,7 @@
     
     <script>
         // 设置左侧菜单
+        // 是这个项目中原先就有的代码，它实现菜单的高亮效果
         $('#release_btn').click(function(){
             window.parent.setMenu(1,1);
         })
@@ -128,16 +130,13 @@
         })
 
 
-        $.get('http://localhost:8000/admin/search',function(res){
-            // 这个接口的参数就有默认值，你可以先一个参数也不写
-            console.log(res);
+        article.show(function(res){
             // 模板引擎 渲染页面
             var htmlStr = template("table_temp", res)
             console.log(htmlStr);
-            $('#tableContainer').html(htmlStr) 
-            
+            $('#tableContainer').html(htmlStr)  
         })
-
+        
     </script>
 </body>
 
