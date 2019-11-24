@@ -19,5 +19,29 @@ var article = {
         $.get(APIURLS.article_del,{'id': id},function(res){
             callback(res)
         })
+    },
+    getDetail: function (id, callback) {
+        // console.log("getDetail的参数", id)
+        $.get(APIURLS.article_show,
+            {
+                id: id
+            },
+            function (res) {
+                callback(res)
+            }
+        )
+    },
+    // fd: formData对象
+    edit: function(fd, callback) {
+        $.ajax({
+            type:'post',
+            url : APIURLS.article_edit,
+            data: fd,
+            processData:false, // 不要让jquery去处理formData数据
+            contentType:false, // 不设置默认的请求头
+            success:function(res){
+                callback(res)
+            }
+        })
     }
 }

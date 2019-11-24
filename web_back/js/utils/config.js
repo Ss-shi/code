@@ -14,7 +14,9 @@ var APIURLS = {
 
     // 文章搜索的地址
     article_show: baseUrl + 'admin/search',
-    article_del: baseUrl + 'admin/article_delete'
+
+    article_del: baseUrl + 'admin/article_delete',
+    article_edit: baseUrl + 'admin/article_edit'
 }
 
 
