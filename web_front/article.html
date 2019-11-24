@@ -58,10 +58,10 @@
             <div class="breadcrumb">
                 当前位置： <a href="#">首页</a> &gt; <a href="#">科技</a> &gt; 文章详情
             </div>
-            <h3 class="article_title">马斯克的新花样？连接人脑和电脑的初创公司又筹了一笔钱</h3>
-            <div class="article_info">杰克 发布于 2019-05-08 07:08:46&nbsp;&nbsp;&nbsp;分类: 奇趣事&nbsp;&nbsp;&nbsp;阅读:
+            <h3 class="article_title" id="article_title">马斯克的新花样？连接人脑和电脑的初创公司又筹了一笔钱</h3>
+            <div class="article_info"><span id="article_author">杰克</span> 发布于 <span id="article_date"></span>&nbsp;&nbsp;&nbsp;分类: <span id="article_type"></span>&nbsp;&nbsp;&nbsp;阅读:
                 (98)&nbsp;&nbsp;&nbsp;评论: (0)</div>
-            <div class="article_con">
+            <div class="article_con" id="article_content">
 
                 <p>“上天入地”还不够？硅谷“钢铁侠”马斯克名下一家低调的公司最近又融了一大笔钱。</p>
 
@@ -83,14 +83,14 @@
             <form action="" class="comment_form">
                 <div class="form_group">
                     <label>用户名：</label>
-                    <input type="text" placeholder="请输入用户名" class="comment_name">
+                    <input type="text" placeholder="请输入用户名" id="name" class="comment_name">
                 </div>
                 <div class="form_group">
                     <label>评论内容：</label>
-                    <textarea placeholder="请发表您的评论" class="comment_input"></textarea>
+                    <textarea placeholder="请发表您的评论" id="content" class="comment_input"></textarea>
                 </div>
                 <div class="form_group">
-                    <input type="submit" name="" value="评 论" class="comment_sub"></div>
+                    <input type="button" id="btnAdd" name="" value="评 论" class="comment_sub"></div>
             </form>
 
             <div class="comment_count">
@@ -204,6 +204,67 @@
         <p>CopyRight © 2019 深圳大事件信息技术股份有限公司 All Rights Reserved</p>
         <p>电话：0755-****888 粤ICP备*******8号</p>
     </div>
+    
+    <script src="./js/jquery-1.12.4.min.js"></script>
+    <script src="./js/utils/config.js"></script>
+    <script src="./js/utils/article.js"></script>
+    <script src="./js/utils/category.js"></script>
+    <script src="./js/utils/comment.js"></script>
+    <script>
+    // 1. 从地址栏中取出id
+    // http://127.0.0.1:5500/web_front/article.html?id=1574513631472 
+    // location.search ===> ?id=1574513631472 
+    //  substr(4) ?id=1574513631472 ===> 1574513631472 
+    var id = location.search.substr(4)
+    // alert(id)
+    // 2. 根据id去获取文章的详情
+    article.getDetail(id, function(res){
+        var typeId = res.data.type;
+        console.log(res);
+        //// 把数据显示在页面上
+        // 3. 显示
+        $('#article_title').html(res.data.title)
+        $('#article_author').html(res.data.author)
+        $('#article_date').text(res.data.date)
+        
+        $('#article_content').html(res.data.content)
+
+        // 由于在详情接口中，取回来的是类型的编号
+        // 而显示出来应该是文本。所以还要再次请求
+        category.show(function(result){
+            // console.log(result.data);
+            // result.data = [{id,name},{}]
+            // 目标就是在result.data中找出id 是 1的那个元素
+            var rs = result.data.find(function(item){
+                if(item.id == typeId){
+                    return true
+                }
+            })
+            console.log(rs);
+            // 如果找到了
+            if(rs){
+                $('#article_type').text(rs.name)
+            }
+        })
+    })
+    
+    // 添加评论
+    $('#btnAdd').click(function(){
+        // 1. 收集信息
+        var name = $('#name').val().trim()
+        var content = $('#content').val().trim()
+        // 2. 对信息简单判断
+        if(name === '' || content === ''){
+            alert(' 不能为空 ')
+            return;
+        }
+        // 3. 调用方法
+        comment.add(name, content, id, function(res){
+            console.log(res);
+            
+        })
+    })
+    </script>
 
 </body>
 

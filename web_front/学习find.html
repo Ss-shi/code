@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        var arr = [ { id: 1, name: "科学", slug: "kexue" },
+                    { id: 2, name: "八卦", slug: "bagua" },
+                    { id: 4, name: "新闻", slug: "news" },
+                    { id: 5, name: "奇异", slug: "outhome" },
+                    { id: 8, name: "军事", slug: "eyekillyou" },
+                    { id: 14, name: "情感", slug: "情感" }]
+        var type = 800;
+        // 目标是：在数组arr中寻找出是否有一个元素它的id值是type
+        // 格式：var rs = arr.find(function(当前元素，当前下标，数组本身){
+        ///    在函数体中，如果有return true的情况，则结束查找，并返回当前元素
+        //       if(XXXXXX){
+        //           return true
+        //       }
+        // })
+        //  如果找不到，则返回undefined
+        var rs =  arr.find(function(item,idx,self){
+            
+            // console.log(item,idx,self);
+            if(item.id == type){
+                return true
+            }
+            
+        })
+        console.log(rs)
+    </script>
+</body>
+
+</html>
