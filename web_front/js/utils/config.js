@@ -10,5 +10,7 @@ var APIURLS = {
     article_show: baseUrl + 'admin/search',
 
     // 评论
-    comment_add: baseUrl + 'post_comment'
+    comment_add: baseUrl + 'post_comment',
+    comment_get: baseUrl + 'get_comments',
+
 }

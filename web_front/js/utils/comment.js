@@ -12,5 +12,11 @@ var comment = {
                 callback(res)
             }
         )
+    },
+    // aritcle_id: 形参
+    get:function(aritcle_id,callback){
+        $.get(APIURLS.comment_get, {aritcle_id: aritcle_id} ,function(res){
+            callback(res)
+        })
     }
 }

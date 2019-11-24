@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script src="./js/dayjs.min.js"></script>
+    <script src="https://unpkg.com/dayjs/locale/zh-cn"></script>
+    <script src="./js/relative.min.js"></script>
+
+    <script>
+        dayjs.locale('zh-cn') ; // 全局设置，中文
+        console.log( dayjs(1574569074605).add(10, 'day').format('YYYY-MM-DD ddd') )
+        // 使用插件
+        // 格式： dayjs.extend(dayjs_plugin_插件名字)
+        dayjs.extend(dayjs_plugin_relativeTime);
+        // 用了插件之后，dayjs就会多一些功能
+        // 指定的时间戳到现在为止是 XXX 
+        console.log( dayjs(1574569074605).toNow() )
+    </script>
+</body>
+</html>
