@@ -43,5 +43,12 @@ var article = {
                 callback(res)
             }
         })
+    },
+    // 获取月新增文章数量
+    getMonthCount: function(callback){
+        $.get(APIURLS.month_article_count,function(res){
+            callback(res)
+        })
     }
+  
 }

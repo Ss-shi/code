@@ -16,7 +16,10 @@ var APIURLS = {
     article_show: baseUrl + 'admin/search',
 
     article_del: baseUrl + 'admin/article_delete',
-    article_edit: baseUrl + 'admin/article_edit'
+    article_edit: baseUrl + 'admin/article_edit',
+
+    // 月新增文章数
+    month_article_count:  baseUrl + 'admin/month_article_count'
 }
 
 
